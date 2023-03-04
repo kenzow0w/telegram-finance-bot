@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vladokus
+      changes:
+        - createTable:
+            tableName: difference
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: integer

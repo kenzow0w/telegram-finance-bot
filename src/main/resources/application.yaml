@@ -1,0 +1,21 @@
+server:
+  port: 8084
+bot:
+  name: GladSugrob_bot
+  token: 1727823669:AAF5ssZj5iYpF1EFrusns3Tn2RE3tn1hSPk
+spring:
+  main.allow-bean-definition-overriding: true
+  jpa:
+    database: postgresql
+    generate-ddl: true
+    hibernate.ddl-auto: none
+  sql:
+    init:
+      platform: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+  liquibase:
+    enabled: true

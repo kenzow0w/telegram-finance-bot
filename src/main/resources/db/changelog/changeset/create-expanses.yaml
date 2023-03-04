@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vladokus
+      changes:
+        - createTable:
+            tableName: expanses
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: categories
+                  type: varchar
+              - column:
+                  name: amount
+                  type: integer

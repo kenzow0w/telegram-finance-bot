@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-difference.yaml
+  - include:
+      file: db/changelog/changeset/create-income.yaml
+  - include:
+      file: db/changelog/changeset/create-expanses.yaml
