@@ -2,13 +2,13 @@ server:
   port: 8084
 bot:
   name: GladSugrob_bot
-  token: 1727823669:AAF5ssZj5iYpF1EFrusns3Tn2RE3tn1hSPk
+  token: 1727823669:AAEpg-T8NjjUn-8xv4vGmdr31H2O2uTELyg
 spring:
   main.allow-bean-definition-overriding: true
   jpa:
     database: postgresql
     generate-ddl: true
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: update
   sql:
     init:
       platform: postgres

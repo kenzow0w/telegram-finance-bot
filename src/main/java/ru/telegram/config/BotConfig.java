@@ -1,4 +1,4 @@
-package ru.telegram.init;
+package ru.telegram.config;
 
 import lombok.Getter;
 import lombok.Setter;

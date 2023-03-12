@@ -18,3 +18,4 @@ databaseChangeLog:
               - column:
                   name: amount
                   type: integer
+#                  defaultValueNumeric: 0

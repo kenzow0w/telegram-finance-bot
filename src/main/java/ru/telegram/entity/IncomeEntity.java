@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "income", schema = "public")
+@Table(name = "income", schema = "bot")
 public class IncomeEntity {
 
     @Id
@@ -33,8 +33,8 @@ public class IncomeEntity {
     /**
      * Amount
      */
-    @Column(name = "ammount")
-    Integer ammount;
+    @Column(name = "amount")
+    Integer amount;
 
 
 }

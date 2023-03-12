@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-income
+      author: vladokus
+      changes:
+        - addDefaultValue:
+            schemaName: bot
+            tableName: income
+            columnName: amount
+            defaultValueNumeric: 0

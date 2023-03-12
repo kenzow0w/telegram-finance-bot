@@ -1,5 +1,6 @@
 package ru.telegram.entity;
 
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +17,23 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "difference", schema = "public")
-public class DifferenceEntity {
+@Table(name = "expanses", schema = "bot")
+public class ExpensesEntity {
+
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     /**
-     * Ammount
+     * Categories
      */
-    @Column(name = "ammount")
-    Integer ammount;
+    @Column(name = "categories")
+    String categories;
+
+    /**
+     * Categories
+     */
+    @Column(name = "amount", nullable = false)
+    Integer amount;
 
 }

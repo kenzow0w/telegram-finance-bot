@@ -5,20 +5,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.telegram.dao.ExpansesEntityRepository;
-import ru.telegram.init.BotConfig;
-import ru.telegram.utils.Command;
+import ru.telegram.config.BotConfig;
+import ru.telegram.service.handler.CommandHandler;
+import ru.telegram.utils.CommandEnum;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -28,8 +30,36 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig config;
 
-    public TelegramBot(BotConfig config) {
+    @Autowired
+    List<CommandHandler> commandHandlers;
+
+    @Autowired
+    UpdateController updateController;
+    @Autowired
+    UserController userController;
+    @Autowired
+    IncomeController incomeController;
+    @Autowired
+    ExpensesController expensesController;
+
+
+
+    public TelegramBot(BotConfig config, UpdateController updateController) {
         this.config = config;
+        this.updateController = updateController;
+    }
+
+    @PostConstruct
+    public void init() throws TelegramApiException {
+        updateController.registerBot(this);
+        List<BotCommand> commands = List.of(
+                new BotCommand(CommandEnum.START.name, "Начало..."),
+                new BotCommand(CommandEnum.INFO.name, "Информация..."),
+                new BotCommand(CommandEnum.DELETE.name, "Удалить последнюю операцию..."),
+                new BotCommand(CommandEnum.HISTORY.name, "История операций..."),
+                new BotCommand(CommandEnum.HELP.name, "Помощь...")
+        );
+        this.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
     }
 
     @Override
@@ -43,48 +73,24 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onRegister() {
-        super.onRegister();
-    }
-
-    @Override
     public void onUpdateReceived(Update update) {
-        if (!update.getMessage().hasText()) {
-            return;
-        }
-        long chatId = update.getMessage().getChatId();
-        String name = update.getMessage().getChat().getFirstName() + " " + update.getMessage().getChat().getLastName();
-        String messageText = update.getMessage().getText();
-        LOG.info(messageText + " " + name);
-        switch (messageText) {
-            case "/start":
-                startCommandReceived(chatId, name);
-                break;
-            default:
-                String com = Arrays.stream(Command.values()).filter(c -> c.getDescription().equals(messageText)).findFirst().toString();
-
-        }
+        updateController.processUpdate(update);
     }
 
-    private void startCommandReceived(long id, String name) {
-        String answer = "Hi " + name + " start to count your budget";
-        greetingMessageWithMenu(id, answer);
-    }
-
-    private void greetingMessageWithMenu(long id, String textToSend) {
-        SendMessage message = new SendMessage();
-        message.setChatId(id);
-        message.setText(textToSend);
-        ReplyKeyboardMarkup replyKeyboardMarkup = getMenu();
-        message.setReplyMarkup(replyKeyboardMarkup);
-        message.setParseMode(ParseMode.HTML);
-        message.disableWebPagePreview();
+    public void sendMessage(Long chatId, String message) {
         try {
-            execute(message);
+            SendMessage sendMessage = SendMessage
+                    .builder()
+                    .chatId(chatId.toString())
+                    .text(message)
+                    .build();
+            execute(sendMessage);
         } catch (TelegramApiException e) {
-            e.getMessage();
+            LOG.error(String.format("Sending message error: %s", e.getMessage()));
         }
     }
+
+
 
     private ReplyKeyboardMarkup getMenu() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -108,14 +114,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         // Первая строчка клавиатуры
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         // Добавляем кнопки в первую строчку клавиатуры
-        keyboardFirstRow.add(Command.ADD_EXPANSES.getDescription());
-        keyboardFirstRow.add(Command.ADD_INCOME.getDescription());
+//        keyboardFirstRow.add(Command.START.name());
+//        keyboardFirstRow.add(Command.CLEAR.name());
 
         KeyboardRow keyboard2Row = new KeyboardRow();
         // Добавляем кнопки во вторую строчку клавиатуры
-        keyboard2Row.add(Command.SHOW_EXPANSES.getDescription());
-        keyboard2Row.add(Command.BALANCE.getDescription());
-        keyboard2Row.add(Command.SHOW_INCOME.getDescription());
+//        keyboard2Row.add(Command.SHOW_EXPANSES.getDescription());
+//        keyboard2Row.add(Command.BALANCE.getDescription());
+//        keyboard2Row.add(Command.SHOW_INCOME.getDescription());
 
         // Добавляем кнопки во третью строчку клавиатуры
 //        KeyboardRow keyboard3Row = new KeyboardRow();
@@ -127,11 +133,5 @@ public class TelegramBot extends TelegramLongPollingBot {
         // добавляем список клавиатуре
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;
-    }
-
-
-    @Override
-    public void onUpdatesReceived(List<Update> updates) {
-        super.onUpdatesReceived(updates);
     }
 }

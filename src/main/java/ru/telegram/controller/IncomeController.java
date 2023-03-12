@@ -1,19 +1,23 @@
 package ru.telegram.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.telegram.service.IncomeServiceImpl;
 
-@Controller
+@Component
 public class IncomeController {
 
-    IncomeServiceImpl incomeService;
-
-    @RequestMapping("Add income")
-    public SendMessage addIncome(){
-
-        return null;
+    public IncomeController(IncomeServiceImpl incomeService) {
+        this.incomeService = incomeService;
     }
 
+    private IncomeServiceImpl incomeService;
+
+    public Integer balance(long id) {
+        return incomeService.balance(id);
+    }
+
+    public String add(long id, int amount) {
+        return incomeService.add(id, amount);
+    }
 }
