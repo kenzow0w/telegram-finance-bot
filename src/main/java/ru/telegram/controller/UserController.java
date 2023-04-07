@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.telegram.telegrambots.meta.api.objects.User;
+import ru.telegram.entity.UserEntity;
 import ru.telegram.service.UserServiceImpl;
 
 @Controller
@@ -18,11 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    public User getOne(long id) {
+    public UserEntity getOne(long id) {
         return userService.getOne(id);
     }
 
     public User save(User user) {
-        return  userService.save(user);
+        return userService.save(user);
     }
 }

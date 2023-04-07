@@ -1,4 +1,4 @@
-package ru.telegram.service.handler;
+package ru.telegram.service.handler.commandImpl;
 
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,19 +8,18 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import ru.telegram.controller.TelegramBot;
-import ru.telegram.service.ExpensesServiceImpl;
-import ru.telegram.service.IncomeServiceImpl;
+import ru.telegram.controller.UserController;
+import ru.telegram.service.handler.CommandHandler;
 import ru.telegram.utils.CommandEnum;
 
 @Component
-public class InfoHandler implements CommandHandler{
+public class InfoHandler implements CommandHandler {
     @Lazy
     @Autowired
     private TelegramBot telegramBot;
+
     @Autowired
-    private IncomeServiceImpl incomeService;
-    @Autowired
-    private ExpensesServiceImpl expensesService;
+    UserController userController;
 
 
     @SneakyThrows
@@ -29,8 +28,8 @@ public class InfoHandler implements CommandHandler{
         User user = msg.getFrom();
         Long userId = user.getId();
         String text = "<b> " + user.getLastName() + " " + user.getFirstName() + " </b>\n\n";
-//        int totalSum = incomeService.balance(userId);
-//        text += "<b>Ваш баланс</b>: " + totalSum + " руб.\n";
+        double totalSum = userController.getOne(userId).getBalance();
+        text += "<b>Ваш баланс</b>: " + totalSum + " руб.\n";
 //        int uotSum = expensesService.getAmount(userId);
 //        BigDecimal outSum = repository.getOutSum(userId);
 //        text += "<b>Расход</b>: " + outSum + " руб.\n";
@@ -44,5 +43,10 @@ public class InfoHandler implements CommandHandler{
     @Override
     public boolean isMatch(String msgText) {
         return msgText.equals(CommandEnum.INFO.name);
+    }
+
+    @Override
+    public SendMessage sendInlineKeyBoardMessage(long chatId) {
+        return null;
     }
 }

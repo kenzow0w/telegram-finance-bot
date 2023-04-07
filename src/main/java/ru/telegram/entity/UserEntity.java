@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class UserEntity {
 
     @Id
     @Column(name = "chat_id", nullable = false)
-    long chatId;
+    Long chatId;
     /**
      * First name
      */
@@ -37,17 +39,29 @@ public class UserEntity {
     String userName;
 
     /**
-     * Expenses
+     * Started at
      */
-    @ManyToOne
-    @JoinColumn(name = "expenses_id")
-    ExpensesEntity expenses;
+    @Column(name = "started_at")
+    LocalDateTime startedAt;
 
     /**
-     * Income
+     * Balance
      */
-    @ManyToOne
-    @JoinColumn(name = "income_id")
-    IncomeEntity income;
+    @Column(name = "balance")
+    Double balance;
+
+    /**
+     * Expenses
+     */
+    @OneToMany
+    @JoinColumn(name = "expenses_id")
+    List<ExpensesEntity> expenses;
+
+    /**
+     * Incomes
+     */
+    @OneToMany
+    @JoinColumn(name = "incomes_id")
+    List<IncomeEntity> incomes;
 
 }

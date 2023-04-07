@@ -19,3 +19,6 @@ spring:
 
   liquibase:
     enabled: true
+    default-schema: bot
+    liquibase-schema: bot
+#    clear-checksums: true

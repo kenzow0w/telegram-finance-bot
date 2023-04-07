@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -17,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.telegram.config.BotConfig;
 import ru.telegram.service.handler.CommandHandler;
+import ru.telegram.service.handler.InlineHandler;
 import ru.telegram.utils.CommandEnum;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +34,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     List<CommandHandler> commandHandlers;
+    @Autowired
+    List<InlineHandler> inlineHandlers;
 
     @Autowired
     UpdateController updateController;
@@ -42,11 +46,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     ExpensesController expensesController;
 
+    public InlineKeyboardMarkup inlineKeyboardMarkup;
 
 
     public TelegramBot(BotConfig config, UpdateController updateController) {
         this.config = config;
         this.updateController = updateController;
+        this.inlineKeyboardMarkup = null;
     }
 
     @PostConstruct
@@ -91,6 +97,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
+    public void sendMessage(SendMessage message) {
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            LOG.error(String.format("Sending message error: %s", e.getMessage()));
+        }
+    }
 
     private ReplyKeyboardMarkup getMenu() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

@@ -4,7 +4,7 @@ databaseChangeLog:
       author: vladokus
       changes:
         - createTable:
-            tableName: expanses
+            tableName: incomes
             columns:
               - column:
                   name: createdAt

@@ -2,15 +2,22 @@ package ru.telegram.utils;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
+import ru.telegram.entity.ExpensesEntity;
+import ru.telegram.entity.IncomeEntity;
 import ru.telegram.entity.UserEntity;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class MappingUtils {
 
     public static User mapToUser(UserEntity userEntity){
         User user = new User();
+        user.setId(userEntity.getChatId());
         user.setFirstName(userEntity.getFirstName());
         user.setLastName(userEntity.getLastName());
+        user.setUserName(userEntity.getUserName());
         return user;
     }
 
@@ -21,14 +28,16 @@ public class MappingUtils {
             entity.setFirstName(user.getFirstName());
             entity.setLastName(user.getLastName());
             entity.setUserName(user.getUserName());
-//            ExpensesEntity expensesEntity = entity.getExpenses();
-//            if(expensesEntity != null){
-//                entity.setExpenses()
-//            }
-//            IncomeEntity incomeEntity = entity.getIncome();
-//            if(incomeEntity != null){
-//                entity.setIncome(incomeEntity);
-//            }
+            entity.setStartedAt(LocalDateTime.now());
+            entity.setBalance(0.0);
+            List<ExpensesEntity> expensesEntity = entity.getExpenses();
+            if(expensesEntity != null){
+                entity.setExpenses(expensesEntity);
+            }
+            List<IncomeEntity> incomeEntity = entity.getIncomes();
+            if(incomeEntity != null){
+                entity.setIncomes(incomeEntity);
+            }
             return entity;
         }catch (RuntimeException e){
             return null;

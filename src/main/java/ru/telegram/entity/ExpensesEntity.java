@@ -7,10 +7,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,10 +23,16 @@ public class ExpensesEntity {
     private Long id;
 
     /**
+     * CreatedAt
+     */
+    @Column(name="createdAt", nullable = false)
+    LocalDateTime localDateTime;
+
+    /**
      * Categories
      */
-    @Column(name = "categories")
-    String categories;
+    @Column(name = "category")
+    String category;
 
     /**
      * Categories

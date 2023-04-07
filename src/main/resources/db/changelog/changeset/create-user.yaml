@@ -18,3 +18,16 @@ databaseChangeLog:
               - column:
                   name: last_name
                   type: varchar
+              - column:
+                  name: user_name
+                  type: varchar
+              - column:
+                  name: balance
+                  type: number
+                  defaultValue: 0
+              - column:
+                  name: expenses_id
+                  type: integer
+              - column:
+                  name: income_id
+                  type: integer
