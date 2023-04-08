@@ -52,9 +52,9 @@ public class StartHandler implements CommandHandler {
             List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
             List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
             inlineKeyboardButton1.setText(EmojiParser.parseToUnicode("Расходы :money_face:"));
-            inlineKeyboardButton1.setCallbackData("Расходы");
+            inlineKeyboardButton1.setCallbackData("expansesButton");
             inlineKeyboardButton2.setText(EmojiParser.parseToUnicode("Доходы :moneybag:"));
-            inlineKeyboardButton2.setCallbackData("Доходы");
+            inlineKeyboardButton2.setCallbackData("incomesButton");
             keyboardButtonsRow1.add(inlineKeyboardButton1);
             keyboardButtonsRow2.add(inlineKeyboardButton2);
             List<List<InlineKeyboardButton>> rowList = new ArrayList<>();

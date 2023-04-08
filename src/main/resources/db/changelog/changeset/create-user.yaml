@@ -22,11 +22,14 @@ databaseChangeLog:
                   name: user_name
                   type: varchar
               - column:
+                  name: last_command
+                  type: varchar
+              - column:
                   name: balance
                   type: number
                   defaultValue: 0
               - column:
-                  name: expenses_id
+                  name: expanses_id
                   type: integer
               - column:
                   name: income_id

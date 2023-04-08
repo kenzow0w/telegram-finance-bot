@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.User;
-import ru.telegram.dao.ExpensesEntityRepository;
+import ru.telegram.dao.ExpansesEntityRepository;
 import ru.telegram.dao.IncomeEntityRepository;
 import ru.telegram.dao.UserEntityRepository;
 import ru.telegram.entity.UserEntity;
@@ -20,7 +20,7 @@ public class UserServiceImpl {
     
     private final UserEntityRepository userEntityRepository;
 
-    public UserServiceImpl(UserEntityRepository userEntityRepository, IncomeEntityRepository incomeEntityRepository, ExpensesEntityRepository expensesEntityRepository){
+    public UserServiceImpl(UserEntityRepository userEntityRepository, IncomeEntityRepository incomeEntityRepository, ExpansesEntityRepository expensesEntityRepository){
         this.userEntityRepository = userEntityRepository;
     }
 
@@ -37,5 +37,11 @@ public class UserServiceImpl {
         LOG.info("User added: " + (userEntity != null ? userEntity.getUserName() : userEntity.getFirstName()));
         userEntityRepository.save(userEntity);
         return user;
+    }
+
+    public void saveLastCommand(long id, String lastCommand) {
+        UserEntity userEntity = getOne(id);
+        userEntity.setLastCommand(lastCommand);
+        userEntityRepository.save(userEntity);
     }
 }

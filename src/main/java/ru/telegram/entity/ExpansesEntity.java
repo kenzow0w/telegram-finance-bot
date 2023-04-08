@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "expanses", schema = "bot")
-public class ExpensesEntity {
+public class ExpansesEntity {
 
     @Id
     @Column(name = "id", nullable = false)

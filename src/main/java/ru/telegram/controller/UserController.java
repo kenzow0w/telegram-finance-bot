@@ -26,4 +26,13 @@ public class UserController {
     public User save(User user) {
         return userService.save(user);
     }
+
+    public void saveLastCommand(long id, String lastCommand) {
+        userService.saveLastCommand(id, lastCommand);
+    }
+
+    public void saveCategory(long id, String category) {
+        UserEntity userEntity = userService.getOne(id);
+
+    }
 }

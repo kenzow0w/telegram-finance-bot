@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.telegram.utils.MappingUtils;
 
 @Component
 public class UpdateController {
@@ -37,6 +38,8 @@ public class UpdateController {
                             return;
                         }
                     }
+                } else if (telegramBot.userController.getOne(message.getFrom().getId()).getLastCommand().matches("\\d")) {
+//                    telegramBot.expansesController.saveCategory();
                 } else {
                     telegramBot.sendMessage(chatId, "Операция не поддерживается!");
                 }

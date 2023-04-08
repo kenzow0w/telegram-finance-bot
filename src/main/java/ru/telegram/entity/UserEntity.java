@@ -51,11 +51,17 @@ public class UserEntity {
     Double balance;
 
     /**
-     * Expenses
+     * Last command
+     */
+    @Column(name = "last_command")
+    String lastCommand;
+
+    /**
+     * Expanses
      */
     @OneToMany
-    @JoinColumn(name = "expenses_id")
-    List<ExpensesEntity> expenses;
+    @JoinColumn(name = "expanses_id")
+    List<ExpansesEntity> expanses;
 
     /**
      * Incomes

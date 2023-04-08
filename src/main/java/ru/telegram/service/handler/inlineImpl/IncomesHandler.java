@@ -11,7 +11,7 @@ import ru.telegram.utils.InlineEnum;
 public class IncomesHandler implements InlineHandler {
     @Override
     public boolean isMatch(String msg) {
-        return msg.equals(InlineEnum.INCOMES.name);
+        return msg.contains(InlineEnum.INCOMES.name);
     }
 
     @Override

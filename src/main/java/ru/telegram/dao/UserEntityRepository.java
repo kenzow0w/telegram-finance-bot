@@ -6,6 +6,4 @@ import ru.telegram.entity.UserEntity;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, Integer> {
-
-
 }

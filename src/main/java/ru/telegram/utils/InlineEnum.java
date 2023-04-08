@@ -7,8 +7,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
 public enum InlineEnum {
-    EXPANSES("Расходы"),
-    INCOMES("Доходы"),
+    EXPANSES("expanses"),
+    INCOMES("incomes"),
     BACK("Назад");
 
     String name;

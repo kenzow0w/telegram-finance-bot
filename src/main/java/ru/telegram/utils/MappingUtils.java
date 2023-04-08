@@ -2,7 +2,7 @@ package ru.telegram.utils;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
-import ru.telegram.entity.ExpensesEntity;
+import ru.telegram.entity.ExpansesEntity;
 import ru.telegram.entity.IncomeEntity;
 import ru.telegram.entity.UserEntity;
 
@@ -30,9 +30,9 @@ public class MappingUtils {
             entity.setUserName(user.getUserName());
             entity.setStartedAt(LocalDateTime.now());
             entity.setBalance(0.0);
-            List<ExpensesEntity> expensesEntity = entity.getExpenses();
-            if(expensesEntity != null){
-                entity.setExpenses(expensesEntity);
+            List<ExpansesEntity> expansesEntity = entity.getExpanses();
+            if(expansesEntity != null){
+                entity.setExpanses(expansesEntity);
             }
             List<IncomeEntity> incomeEntity = entity.getIncomes();
             if(incomeEntity != null){

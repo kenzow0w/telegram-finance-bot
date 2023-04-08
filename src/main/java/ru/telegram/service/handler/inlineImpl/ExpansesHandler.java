@@ -4,13 +4,13 @@ import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.telegram.controller.TelegramBot;
+import ru.telegram.controller.UserController;
 import ru.telegram.service.handler.InlineHandler;
 import ru.telegram.utils.InlineEnum;
 
@@ -24,16 +24,25 @@ public class ExpansesHandler implements InlineHandler {
     @Autowired
     TelegramBot telegramBot;
 
+    @Autowired
+    UserController userController;
+
     @Override
     public boolean isMatch(String msg) {
-        return msg.equals(InlineEnum.EXPANSES.name);
+        return msg.contains(InlineEnum.EXPANSES.name);
     }
 
     @Override
     public void handle(CallbackQuery query) {
         User user = query.getFrom();
-        telegramBot.sendMessage(sendInlineKeyBoardMessage(user.getId()));
+        if (query.getData().equals("expanses_add")) {
+            telegramBot.sendMessage(user.getId(), "Введите категорию расхода");
+            userController.saveLastCommand(user.getId(), "add_category");
+        } else if (query.getData().equals("expanses_for_month")) {
 
+        } else {
+            telegramBot.sendMessage(sendInlineKeyBoardMessage(user.getId()));
+        }
     }
 
     @Override
@@ -46,9 +55,9 @@ public class ExpansesHandler implements InlineHandler {
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
         inlineKeyboardButton1.setText(EmojiParser.parseToUnicode("Добавить :money_face:"));
-        inlineKeyboardButton1.setCallbackData("Добавить");
+        inlineKeyboardButton1.setCallbackData("expanses_add");
         inlineKeyboardButton2.setText(EmojiParser.parseToUnicode("Расходы за месяц :moneybag:"));
-        inlineKeyboardButton2.setCallbackData("Расходы за месяц");
+        inlineKeyboardButton2.setCallbackData("expanses_for_month");
         inlineKeyboardButton3.setText(EmojiParser.parseToUnicode(":arrow_backward: Назад"));
         inlineKeyboardButton3.setCallbackData("Назад");
         keyboardButtonsRow1.add(inlineKeyboardButton1);

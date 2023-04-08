@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
-import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -44,7 +43,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     IncomeController incomeController;
     @Autowired
-    ExpensesController expensesController;
+    ExpansesController expansesController;
 
     public InlineKeyboardMarkup inlineKeyboardMarkup;
 
