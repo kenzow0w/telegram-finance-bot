@@ -60,14 +60,14 @@ public class UserEntity {
      * Expanses
      */
     @OneToMany
-    @JoinColumn(name = "expanses_id")
+    @JoinColumn(name = "chat_id")
     List<ExpansesEntity> expanses;
 
     /**
      * Incomes
      */
     @OneToMany
-    @JoinColumn(name = "incomes_id")
-    List<IncomeEntity> incomes;
+    @JoinColumn(name = "chat_id")
+    List<IncomesEntity> incomes;
 
 }

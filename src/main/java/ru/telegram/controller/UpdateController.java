@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.telegram.utils.MappingUtils;
+import ru.telegram.utils.Utils;
 
 @Component
 public class UpdateController {
@@ -18,6 +18,12 @@ public class UpdateController {
     @Lazy
     @Autowired
     private TelegramBot telegramBot;
+
+    @Autowired
+    ExpansesController expansesController;
+
+    @Autowired
+    Utils utils;
 
     private Message message;
 
@@ -38,8 +44,16 @@ public class UpdateController {
                             return;
                         }
                     }
-                } else if (telegramBot.userController.getOne(message.getFrom().getId()).getLastCommand().matches("\\d")) {
-//                    telegramBot.expansesController.saveCategory();
+                } else if (utils.getOperation().getLastCommand().equals("expanses_add")) {
+                    utils.getOperation().setLastCommand("exp_chose_category");
+                    utils.getOperation().setCategory(message.getText());
+                    telegramBot.sendMessage(chatId, "Введите сумму");
+                } else if (utils.getOperation().getLastCommand().equals("exp_chose_category")) {
+                    utils.getOperation().setLastCommand("input_amount");
+                    utils.getOperation().setAmount(Double.valueOf(message.getText()));
+                    expansesController.save(chatId, MappingUtils.getSTASH().get(chatId));
+                    telegramBot.sendMessage(chatId, "Затраты внесены");
+                    utils.getOperation().setLastCommand("wait");
                 } else {
                     telegramBot.sendMessage(chatId, "Операция не поддерживается!");
                 }
@@ -53,7 +67,6 @@ public class UpdateController {
                     inlineHandler.handle(update.getCallbackQuery());
                     return;
                 }
-                AnswerCallbackQuery answer = new AnswerCallbackQuery(update.getCallbackQuery().getId());
             }
         } else {
             LOG.error("Received null message");

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import ru.telegram.dao.IncomeEntityRepository;
-import ru.telegram.entity.IncomeEntity;
+import ru.telegram.entity.IncomesEntity;
 
 
 @Service
@@ -28,10 +28,10 @@ public class IncomeServiceImpl {
     }
 
     public String add(long id, int amount) {
-        IncomeEntity incomeEntity = incomeEntityRepository.findAll().stream().filter(i -> i.getId() == id).findFirst().get();
-        int currentValue = incomeEntity.getAmount();
-        incomeEntity.setAmount(currentValue + amount);
-        incomeEntityRepository.save(incomeEntity);
-        return String.valueOf(incomeEntity.getAmount());
+        IncomesEntity incomesEntity = incomeEntityRepository.findAll().stream().filter(i -> i.getId() == id).findFirst().get();
+        int currentValue = incomesEntity.getAmount();
+        incomesEntity.setAmount(currentValue + amount);
+        incomeEntityRepository.save(incomesEntity);
+        return String.valueOf(incomesEntity.getAmount());
     }
 }

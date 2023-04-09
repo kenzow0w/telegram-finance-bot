@@ -9,13 +9,18 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.telegram.controller.ExpansesController;
 import ru.telegram.controller.TelegramBot;
 import ru.telegram.controller.UserController;
 import ru.telegram.service.handler.InlineHandler;
 import ru.telegram.utils.InlineEnum;
+import ru.telegram.utils.MappingUtils;
+import ru.telegram.utils.Operation;
+import ru.telegram.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ExpansesHandler implements InlineHandler {
@@ -27,6 +32,9 @@ public class ExpansesHandler implements InlineHandler {
     @Autowired
     UserController userController;
 
+    @Autowired
+    Utils utils;
+
     @Override
     public boolean isMatch(String msg) {
         return msg.contains(InlineEnum.EXPANSES.name);
@@ -37,7 +45,8 @@ public class ExpansesHandler implements InlineHandler {
         User user = query.getFrom();
         if (query.getData().equals("expanses_add")) {
             telegramBot.sendMessage(user.getId(), "Введите категорию расхода");
-            userController.saveLastCommand(user.getId(), "add_category");
+            utils.getOperation().setLastCommand("expanses_add");
+            MappingUtils.getSTASH().put(user.getId(), utils.getOperation());
         } else if (query.getData().equals("expanses_for_month")) {
 
         } else {

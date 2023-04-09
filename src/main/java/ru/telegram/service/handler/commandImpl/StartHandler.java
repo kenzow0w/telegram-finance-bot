@@ -16,6 +16,7 @@ import ru.telegram.controller.UserController;
 import ru.telegram.service.handler.CommandHandler;
 import ru.telegram.utils.CommandEnum;
 import ru.telegram.utils.MappingUtils;
+import ru.telegram.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,15 @@ public class StartHandler implements CommandHandler {
     @Autowired
     UserController userController;
 
+    @Autowired
+    Utils utils;
+
     @Override
     public void handle(Message msg) {
         User user = userController.getOne(msg.getFrom().getId()) != null ? MappingUtils.mapToUser(userController.getOne(msg.getFrom().getId())) : userController.save(msg.getFrom());
         telegramBot.sendMessage(msg.getFrom().getId(), "Hi " + msg.getFrom().getUserName());
+        utils.getOperation().setLastCommand("/start");
+        MappingUtils.getSTASH().put(msg.getFrom().getId(), utils.getOperation());
         telegramBot.sendMessage(sendInlineKeyBoardMessage(user.getId()));
     }
 

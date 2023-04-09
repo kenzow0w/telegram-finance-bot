@@ -7,11 +7,17 @@ databaseChangeLog:
             tableName: expanses
             columns:
               - column:
-                  name: createdAt
+                  name: id
+                  type: number
+              - column:
+                  name: chat_id
+                  type: number
+              - column:
+                  name: created_at
                   type: timestamp
               - column:
                   name: category
                   type: varchar
               - column:
                   name: amount
-                  type: integer
+                  type: number

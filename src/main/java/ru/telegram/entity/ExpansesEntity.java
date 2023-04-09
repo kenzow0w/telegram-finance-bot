@@ -19,13 +19,18 @@ import java.time.LocalDateTime;
 public class ExpansesEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id", nullable = false)
+    private UserEntity userEntity;
 
     /**
      * CreatedAt
      */
-    @Column(name="createdAt", nullable = false)
+    @Column(name="created_at", nullable = false)
     LocalDateTime localDateTime;
 
     /**
@@ -35,9 +40,9 @@ public class ExpansesEntity {
     String category;
 
     /**
-     * Categories
+     * Amount
      */
     @Column(name = "amount", nullable = false)
-    Integer amount;
+    Double amount;
 
 }

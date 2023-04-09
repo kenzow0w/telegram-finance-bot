@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: chat_id
-                  type: integer
+                  type: number
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -27,10 +27,3 @@ databaseChangeLog:
               - column:
                   name: balance
                   type: number
-                  defaultValue: 0
-              - column:
-                  name: expanses_id
-                  type: integer
-              - column:
-                  name: income_id
-                  type: integer

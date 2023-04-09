@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import ru.telegram.entity.UserEntity;
 import ru.telegram.service.UserServiceImpl;
 
+import static ru.telegram.utils.MappingUtils.mapToUserEntity;
+
 @Controller
 public class UserController {
 
@@ -24,15 +26,8 @@ public class UserController {
     }
 
     public User save(User user) {
-        return userService.save(user);
-    }
-
-    public void saveLastCommand(long id, String lastCommand) {
-        userService.saveLastCommand(id, lastCommand);
-    }
-
-    public void saveCategory(long id, String category) {
-        UserEntity userEntity = userService.getOne(id);
-
+        UserEntity userEntity = mapToUserEntity(user);
+        userService.save(userEntity);
+        return user;
     }
 }

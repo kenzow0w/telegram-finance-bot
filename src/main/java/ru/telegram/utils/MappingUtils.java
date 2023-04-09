@@ -3,14 +3,22 @@ package ru.telegram.utils;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
 import ru.telegram.entity.ExpansesEntity;
-import ru.telegram.entity.IncomeEntity;
+import ru.telegram.entity.IncomesEntity;
 import ru.telegram.entity.UserEntity;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MappingUtils {
+
+    public static Map<Long, Operation> STASH = new HashMap<>();
+
+    public static Map<Long, Operation> getSTASH(){
+        return STASH;
+    }
 
     public static User mapToUser(UserEntity userEntity){
         User user = new User();
@@ -34,9 +42,9 @@ public class MappingUtils {
             if(expansesEntity != null){
                 entity.setExpanses(expansesEntity);
             }
-            List<IncomeEntity> incomeEntity = entity.getIncomes();
-            if(incomeEntity != null){
-                entity.setIncomes(incomeEntity);
+            List<IncomesEntity> incomesEntity = entity.getIncomes();
+            if(incomesEntity != null){
+                entity.setIncomes(incomesEntity);
             }
             return entity;
         }catch (RuntimeException e){

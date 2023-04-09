@@ -7,10 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,16 +16,21 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "incomes", schema = "bot")
-public class IncomeEntity {
+public class IncomesEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id", nullable = false)
+    private UserEntity userEntity;
 
     /**
      * CreatedAt
      */
-    @Column(name="createdAt", nullable = false)
+    @Column(name="created_at", nullable = false)
     LocalDateTime localDateTime;
     
     /**
