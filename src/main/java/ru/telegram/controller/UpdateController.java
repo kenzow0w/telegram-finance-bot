@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.telegram.utils.MappingUtils;
+import ru.telegram.config.BotConfig;
+import ru.telegram.service.handler.commandImpl.StartHandler;
 import ru.telegram.utils.Utils;
 
 @Component
@@ -51,7 +52,7 @@ public class UpdateController {
                 } else if (utils.getOperation().getLastCommand().equals("exp_chose_category")) {
                     utils.getOperation().setLastCommand("input_amount");
                     utils.getOperation().setAmount(Double.valueOf(message.getText()));
-                    expansesController.save(chatId, MappingUtils.getSTASH().get(chatId));
+                    expansesController.save(chatId, BotConfig.STASH.get(chatId));
                     telegramBot.sendMessage(chatId, "Затраты внесены");
                     utils.getOperation().setLastCommand("wait");
                 } else {

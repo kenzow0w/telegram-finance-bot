@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
+import ru.telegram.config.BotConfig;
 import ru.telegram.controller.TelegramBot;
 import ru.telegram.controller.UserController;
 import ru.telegram.service.UserServiceImpl;
@@ -46,7 +47,7 @@ public class InfoHandler implements CommandHandler {
         message.enableHtml(true);
         message.setText(text);
         utils.getOperation().setLastCommand("/info");
-        MappingUtils.getSTASH().put(msg.getFrom().getId(), telegramBot.operation);
+        BotConfig.STASH.put(msg.getFrom().getId(), telegramBot.operation);
         telegramBot.execute(message);
     }
 

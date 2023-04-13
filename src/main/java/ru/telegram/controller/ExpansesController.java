@@ -15,4 +15,12 @@ public class ExpansesController {
     public void save(long id, Operation operation) {
         expansesService.save(id, operation);
     }
+
+    public void getLast(long id){
+        expansesService.getLast(id);
+    }
+
+    public void findAllForLastMonth(long id){
+        expansesService.findAllForLastMonth(id);
+    }
 }

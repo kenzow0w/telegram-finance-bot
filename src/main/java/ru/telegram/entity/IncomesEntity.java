@@ -43,7 +43,5 @@ public class IncomesEntity {
      * Amount
      */
     @Column(name = "amount")
-    Integer amount;
-
-
+    Double amount;
 }

@@ -10,6 +10,8 @@ import ru.telegram.entity.UserEntity;
 import ru.telegram.utils.Operation;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpansesServiceImpl {
@@ -35,5 +37,15 @@ public class ExpansesServiceImpl {
         double value = userEntity.getBalance() - operation.getAmount();
         userEntity.setBalance(value);
         userService.save(userEntity);
+    }
+
+    public ExpansesEntity getLast(long id) {
+        UserEntity userEntity = userService.getOne(id);
+        return expansesEntityRepository.findAll().stream().filter(ex -> id == userEntity.getChatId()).toList().get(-1);
+    }
+
+    public List<ExpansesEntity> findAllForLastMonth(long id) {
+        UserEntity userEntity = userService.getOne(id);
+        return expansesEntityRepository.findAll().stream().filter(ex -> id == userEntity.getChatId()).filter(ex -> ex.getLocalDateTime().isAfter(LocalDateTime.now().minusMonths(1))).collect(Collectors.toList());
     }
 }

@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import com.vdurmont.emoji.EmojiParser;
+import ru.telegram.config.BotConfig;
 import ru.telegram.controller.TelegramBot;
 import ru.telegram.controller.UserController;
 import ru.telegram.service.handler.CommandHandler;
@@ -41,7 +42,7 @@ public class StartHandler implements CommandHandler {
         User user = userController.getOne(msg.getFrom().getId()) != null ? MappingUtils.mapToUser(userController.getOne(msg.getFrom().getId())) : userController.save(msg.getFrom());
         telegramBot.sendMessage(msg.getFrom().getId(), "Hi " + msg.getFrom().getUserName());
         utils.getOperation().setLastCommand("/start");
-        MappingUtils.getSTASH().put(msg.getFrom().getId(), utils.getOperation());
+        BotConfig.STASH.put(msg.getFrom().getId(), utils.getOperation());
         telegramBot.sendMessage(sendInlineKeyBoardMessage(user.getId()));
     }
 
@@ -52,7 +53,7 @@ public class StartHandler implements CommandHandler {
 
     @Override
     public SendMessage sendInlineKeyBoardMessage(long chatId) {
-            telegramBot.inlineKeyboardMarkup = new InlineKeyboardMarkup();
+            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
             InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
             List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
@@ -66,11 +67,11 @@ public class StartHandler implements CommandHandler {
             List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
             rowList.add(keyboardButtonsRow1);
             rowList.add(keyboardButtonsRow2);
-            telegramBot.inlineKeyboardMarkup.setKeyboard(rowList);
+            inlineKeyboardMarkup.setKeyboard(rowList);
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
             message.setText("Выберите дальнейшее действие");
-            message.setReplyMarkup(telegramBot.inlineKeyboardMarkup);
+            message.setReplyMarkup(inlineKeyboardMarkup);
             return message;
     }
 }

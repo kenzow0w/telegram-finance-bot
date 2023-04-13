@@ -7,18 +7,10 @@ import ru.telegram.entity.IncomesEntity;
 import ru.telegram.entity.UserEntity;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MappingUtils {
-
-    public static Map<Long, Operation> STASH = new HashMap<>();
-
-    public static Map<Long, Operation> getSTASH(){
-        return STASH;
-    }
 
     public static User mapToUser(UserEntity userEntity){
         User user = new User();
