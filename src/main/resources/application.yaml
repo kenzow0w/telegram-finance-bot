@@ -8,7 +8,7 @@ spring:
   jpa:
     database: postgresql
     generate-ddl: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: none
   sql:
     init:
       platform: postgres

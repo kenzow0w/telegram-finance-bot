@@ -38,10 +38,4 @@ public class UserServiceImpl {
         LOG.info("Save/Update entity: " + (userEntity != null ? userEntity.getUserName() : userEntity.getFirstName()));
         userEntityRepository.save(userEntity);
     }
-
-    public void saveLastCommand(long id, String lastCommand) {
-        UserEntity userEntity = getOne(id);
-        userEntity.setLastCommand(lastCommand);
-        userEntityRepository.save(userEntity);
-    }
 }

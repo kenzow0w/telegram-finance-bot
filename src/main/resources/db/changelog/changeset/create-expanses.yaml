@@ -8,10 +8,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: number
+                  type: bigint
               - column:
                   name: chat_id
-                  type: number
+                  type: bigint
               - column:
                   name: created_at
                   type: timestamp
@@ -20,4 +20,4 @@ databaseChangeLog:
                   type: varchar
               - column:
                   name: amount
-                  type: number
+                  type: double

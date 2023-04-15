@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: chat_id
-                  type: number
+                  type: bigint
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -22,8 +22,5 @@ databaseChangeLog:
                   name: user_name
                   type: varchar
               - column:
-                  name: last_command
-                  type: varchar
-              - column:
                   name: balance
-                  type: number
+                  type: double

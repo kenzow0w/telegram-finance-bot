@@ -51,12 +51,6 @@ public class UserEntity {
     Double balance;
 
     /**
-     * Last command
-     */
-    @Column(name = "last_command")
-    String lastCommand;
-
-    /**
      * Expanses
      */
     @OneToMany
