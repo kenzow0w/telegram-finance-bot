@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.telegram.controller.TelegramBot;
 import ru.telegram.service.handler.InlineHandler;
 import ru.telegram.utils.InlineEnum;
+import ru.telegram.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class BackHandler implements InlineHandler {
     @Autowired
     TelegramBot telegramBot;
 
+    @Autowired
+    Utils utils;
+
     @Override
     public boolean isMatch(String query) {
         return query.equals(InlineEnum.BACK.name);
@@ -30,6 +34,7 @@ public class BackHandler implements InlineHandler {
 
     @Override
     public void handle(CallbackQuery query) {
+        utils.getOperation().setLastCommand("wait");
         telegramBot.sendMessage(sendInlineKeyBoardMessage(query.getFrom().getId()));
     }
 

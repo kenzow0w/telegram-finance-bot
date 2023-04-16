@@ -8,8 +8,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.telegram.config.BotConfig;
-import ru.telegram.service.handler.commandImpl.StartHandler;
+import ru.telegram.service.handler.inlineImpl.ExpansesHandler;
+import ru.telegram.service.handler.inlineImpl.IncomesHandler;
 import ru.telegram.utils.Utils;
+
+import java.util.Arrays;
 
 @Component
 public class UpdateController {
@@ -26,7 +29,16 @@ public class UpdateController {
     @Autowired
     Utils utils;
 
+    @Autowired
+    ExpansesHandler expansesHandler;
+
+    @Autowired
+    IncomesHandler incomesHandler;
+
     private Message message;
+
+    private String[] expOperations = {"exp_chose_category", "exp_input_amount"};
+    private String[] incOperations = {"inc_chose_category", "inc_input_amount"};
 
     public void registerBot(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -45,16 +57,18 @@ public class UpdateController {
                             return;
                         }
                     }
-                } else if (utils.getOperation().getLastCommand().equals("expanses_add")) {
-                    utils.getOperation().setLastCommand("exp_chose_category");
-                    utils.getOperation().setCategory(message.getText());
-                    telegramBot.sendMessage(chatId, "Введите сумму");
+                } else if (Arrays.asList(expOperations).contains(utils.getOperation().getLastCommand())) {
+                    expansesHandler.handle(message);
+
+
                 } else if (utils.getOperation().getLastCommand().equals("exp_chose_category")) {
                     utils.getOperation().setLastCommand("input_amount");
                     utils.getOperation().setAmount(Double.valueOf(message.getText()));
                     expansesController.save(chatId, BotConfig.STASH.get(chatId));
                     telegramBot.sendMessage(chatId, "Затраты внесены");
                     utils.getOperation().setLastCommand("wait");
+                } else if (Arrays.asList(incOperations).contains(utils.getOperation().getLastCommand())) {
+                    incomesHandler.handle(message);
                 } else {
                     telegramBot.sendMessage(chatId, "Операция не поддерживается!");
                 }
