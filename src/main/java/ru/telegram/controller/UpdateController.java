@@ -59,14 +59,6 @@ public class UpdateController {
                     }
                 } else if (Arrays.asList(expOperations).contains(utils.getOperation().getLastCommand())) {
                     expansesHandler.handle(message);
-
-
-                } else if (utils.getOperation().getLastCommand().equals("exp_chose_category")) {
-                    utils.getOperation().setLastCommand("input_amount");
-                    utils.getOperation().setAmount(Double.valueOf(message.getText()));
-                    expansesController.save(chatId, BotConfig.STASH.get(chatId));
-                    telegramBot.sendMessage(chatId, "Затраты внесены");
-                    utils.getOperation().setLastCommand("wait");
                 } else if (Arrays.asList(incOperations).contains(utils.getOperation().getLastCommand())) {
                     incomesHandler.handle(message);
                 } else {
