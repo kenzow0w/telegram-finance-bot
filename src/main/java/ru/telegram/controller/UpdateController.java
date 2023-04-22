@@ -1,5 +1,6 @@
 package ru.telegram.controller;
 
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class UpdateController {
         this.telegramBot = telegramBot;
     }
 
+    @SneakyThrows
     public void processUpdate(Update update) {
         if (update.getMessage() != null) {
             message = update.getMessage();

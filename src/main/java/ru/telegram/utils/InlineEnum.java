@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 public enum InlineEnum {
     EXPANSES("expanses"),
     INCOMES("incomes"),
+    REPORTS("reports"),
     BACK("Назад");
 
     String name;

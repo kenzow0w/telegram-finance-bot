@@ -1,8 +1,8 @@
 server:
   port: 8084
 bot:
-  name: GladSugrob_bot
-  token: 1727823669:AAEpg-T8NjjUn-8xv4vGmdr31H2O2uTELyg
+  name: R2xhZFN1Z3JvYl9ib3Q=
+  token: MTcyNzgyMzY2OTpBQUVwZy1UOE5qalVuLTh4djR2R21kcjMxSDJPMnVURUx5Zw==
 spring:
   main.allow-bean-definition-overriding: true
   jpa:

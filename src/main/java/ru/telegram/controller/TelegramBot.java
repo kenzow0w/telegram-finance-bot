@@ -24,6 +24,7 @@ import ru.telegram.utils.Operation;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -74,12 +75,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return config.getBOT_NAME();
+        return new String(Base64.getDecoder().decode(config.getBOT_NAME()));
     }
 
     @Override
     public String getBotToken() {
-        return config.getBOT_TOKEN();
+        return new String(Base64.getDecoder().decode(config.getBOT_TOKEN()));
     }
 
     @Override
