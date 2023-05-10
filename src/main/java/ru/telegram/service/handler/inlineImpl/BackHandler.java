@@ -40,25 +40,31 @@ public class BackHandler implements InlineHandler {
 
     @Override
     public SendMessage sendInlineKeyBoardMessage(long chatId) {
-        telegramBot.inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
         inlineKeyboardButton1.setText(EmojiParser.parseToUnicode("Расходы :money_face:"));
-        inlineKeyboardButton1.setCallbackData("Расходы");
+        inlineKeyboardButton1.setCallbackData("expansesButton");
         inlineKeyboardButton2.setText(EmojiParser.parseToUnicode("Доходы :moneybag:"));
-        inlineKeyboardButton2.setCallbackData("Доходы");
+        inlineKeyboardButton2.setCallbackData("incomesButton");
+        inlineKeyboardButton3.setText(EmojiParser.parseToUnicode("Отчет"));
+        inlineKeyboardButton3.setCallbackData("reportsButton");
         keyboardButtonsRow1.add(inlineKeyboardButton1);
         keyboardButtonsRow2.add(inlineKeyboardButton2);
+        keyboardButtonsRow3.add(inlineKeyboardButton3);
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
-        telegramBot.inlineKeyboardMarkup.setKeyboard(rowList);
+        rowList.add(keyboardButtonsRow3);
+        inlineKeyboardMarkup.setKeyboard(rowList);
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("Выберите следующие действие:");
-        message.setReplyMarkup(telegramBot.inlineKeyboardMarkup);
+        message.setText("Выберите дальнейшее действие");
+        message.setReplyMarkup(inlineKeyboardMarkup);
         return message;
     }
 }

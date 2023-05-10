@@ -1,6 +1,10 @@
 package ru.telegram.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.telegram.dao.ExpansesEntityRepository;
 import ru.telegram.dao.IncomeEntityRepository;
@@ -15,6 +19,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExpansesServiceImpl {
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private ExpansesEntityRepository expansesEntityRepository;
 
@@ -40,12 +47,29 @@ public class ExpansesServiceImpl {
     }
 
     public ExpansesEntity getLast(long id) {
-        UserEntity userEntity = userService.getOne(id);
-        return expansesEntityRepository.findAll().stream().filter(ex -> id == userEntity.getChatId()).toList().get(-1);
+        String selectSql = " select * from bot.expanses " +
+                " where chat_id = " + id +
+                " order by created_at desc limit 1 ";
+        return namedParameterJdbcTemplate.query(selectSql, new BeanPropertyRowMapper<>(ExpansesEntity.class)).get(0);
     }
 
     public List<ExpansesEntity> findAllForLastMonth(long id) {
-        UserEntity userEntity = userService.getOne(id);
-        return expansesEntityRepository.findAll().stream().filter(ex -> id == userEntity.getChatId()).filter(ex -> ex.getLocalDateTime().isAfter(LocalDateTime.now().minusMonths(1))).collect(Collectors.toList());
+        List<ExpansesEntity> expanses = null;
+        try {
+            String selectSql = " select * from bot.expanses " +
+                    " where created_at > date_trunc('month', current_date) and chat_id = " + id;
+            expanses = namedParameterJdbcTemplate.query(selectSql, new BeanPropertyRowMapper<>(ExpansesEntity.class));
+        } catch (RuntimeException e) {
+            System.out.println("За текущий месяц затраты равны 0");
+        }
+        return expanses;
+    }
+
+    public List<ExpansesEntity> findAllForYear(long id) {
+        String selectSql = """
+                select * from bot.expanses
+                where created_at > date_trunc('year', current_date) and chat id = ;
+                """ + id;
+        return namedParameterJdbcTemplate.query(selectSql, new BeanPropertyRowMapper<>(ExpansesEntity.class));
     }
 }

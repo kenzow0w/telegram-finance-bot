@@ -53,7 +53,9 @@ public class ExpansesHandler implements InlineHandler {
             utils.getOperation().setLastCommand("expanses_add");
             BotConfig.STASH.put(user.getId(), utils.getOperation());
         } else if (query.getData().equals("expanses_for_month")) {
-
+            utils.getOperation().setLastCommand("expanses_for_month");
+            BotConfig.STASH.put(user.getId(), utils.getOperation());
+            expansesController.findAllForLastMonth(user.getId());
         } else if (query.getData().contains("expanses_cat_")) {
             utils.getOperation().setCategory(query.getData().replaceAll("^.{0,13}", ""));
             telegramBot.sendMessage(user.getId(), "Введите сумму");

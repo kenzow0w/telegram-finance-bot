@@ -1,7 +1,6 @@
 package ru.telegram.service.handler.inlineImpl;
 
 import com.vdurmont.emoji.EmojiParser;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,10 +12,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.telegram.config.BotConfig;
+import ru.telegram.controller.ExpansesController;
 import ru.telegram.controller.TelegramBot;
+import ru.telegram.controller.UserController;
 import ru.telegram.service.handler.InlineHandler;
 import ru.telegram.utils.InlineEnum;
-import ru.telegram.utils.PieChartReport;
+import ru.telegram.utils.ModelPieChart;
 import ru.telegram.utils.Utils;
 
 import java.util.ArrayList;
@@ -29,10 +30,16 @@ public class ReportsHandler implements InlineHandler {
     TelegramBot telegramBot;
 
     @Autowired
+    UserController userController;
+
+    @Autowired
+    ExpansesController expansesController;
+
+    @Autowired
     Utils utils;
 
     @Autowired
-    PieChartReport pieChartReport;
+    ModelPieChart modelPieChart;
 
     @Override
     public boolean isMatch(String query) {
@@ -43,15 +50,13 @@ public class ReportsHandler implements InlineHandler {
     public void handle(CallbackQuery query) throws Exception {
         User user = query.getFrom();
         if (query.getData().equals("reports_for_month")) {
-            utils.getOperation().setLastCommand("incomes_add");
+            utils.getOperation().setLastCommand("reports_for_month");
             BotConfig.STASH.put(user.getId(), utils.getOperation());
+            expansesController.findAllForLastMonth(user.getId());
         } else if (query.getData().equals("reports_for_year")) {
-
-        } else if (query.getData().contains("incomes_cat_")) {
-            utils.getOperation().setCategory(query.getData().replaceAll("^.{0,12}", ""));
-            telegramBot.sendMessage(user.getId(), "Введите сумму");
-            utils.getOperation().setLastCommand("inc_input_amount");
+            utils.getOperation().setLastCommand("reports_for_year");
             BotConfig.STASH.put(user.getId(), utils.getOperation());
+            expansesController.findAllForYear(user.getId());
         } else {
             telegramBot.sendMessage(sendInlineKeyBoardMessage(user.getId()));
         }

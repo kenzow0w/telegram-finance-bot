@@ -13,6 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <spring-boot-starter.version>2.6.4</spring-boot-starter.version>
         <emoji.version>5.1.1</emoji.version>
+        <javafx.version>21-ea+5</javafx.version>
     </properties>
 
     <parent>
@@ -47,8 +48,13 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>20</version>
+            <artifactId>javafx-swing</artifactId>
+            <version>21-ea+5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
         <dependency>
@@ -81,6 +87,36 @@
             <artifactId>emoji-java</artifactId>
             <version>${emoji.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>21.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>21.1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.googlecode.gwt-charts/gwt-charts -->
+        <dependency>
+            <groupId>com.googlecode.gwt-charts</groupId>
+            <artifactId>gwt-charts</artifactId>
+            <version>0.9.10</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.gwt/gwt-user -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.10.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.14.3</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
